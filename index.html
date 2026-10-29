@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#075e54">
+  <title>Conecta — Mensajes</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+  <main class="app-shell">
+    <nav class="app-rail" aria-label="Navegación principal">
+      <div class="rail-brand">C</div>
+      <button class="rail-link active" data-page="chats" title="Chats" aria-label="Chats"><span>▤</span><small>Chats</small></button>
+      <button class="rail-link" data-page="contacts" title="Contactos" aria-label="Contactos"><span>♙</span><small>Contactos</small></button>
+      <button class="rail-link" data-page="calls" title="Llamadas" aria-label="Llamadas"><span>◉</span><small>Llamadas</small></button>
+      <div class="rail-spacer"></div>
+      <button class="rail-link rail-settings" id="railSettings" title="Configuración" aria-label="Configuración"><span>⚙</span><small>Ajustes</small></button>
+    </nav>
+    <aside class="sidebar">
+      <header class="sidebar-header">
+        <div class="brand"><span class="brand-mark">C</span><span>Conecta</span></div>
+        <button class="profile-avatar" id="profileButton" title="Configuración de tu perfil" aria-label="Abrir configuración">T</button>
+      </header>
+      <div class="sidebar-title"><div><h1>Chats</h1><p>Habla con tu gente</p></div><button class="new-chat" id="newChat" title="Agregar contacto con código" aria-label="Agregar contacto">＋</button></div>
+      <label class="search-box"><span>⌕</span><input id="search" type="search" placeholder="Buscar o empezar un chat" autocomplete="off"></label>
+      <div class="filter-row"><button class="filter active">Todos</button><button class="filter">No leídos</button><button class="filter">Favoritos</button></div>
+      <section class="chat-list" id="chatList" aria-label="Conversaciones"></section>
+      <footer class="sidebar-footer"><span class="lock-icon">◇</span> Tus conversaciones, a tu manera</footer>
+    </aside>
+
+    <section class="conversation" aria-label="Conversación">
+      <header class="conversation-header" id="conversationHeader"></header>
+      <div class="messages" id="messages" aria-live="polite"></div>
+      <form class="composer" id="composer"><button type="button" class="add-button" aria-label="Adjuntar archivo" title="Adjuntar archivo">＋</button><input id="messageInput" type="text" placeholder="Escribe un mensaje" autocomplete="off" aria-label="Escribe un mensaje"><button class="send-button" type="submit" aria-label="Enviar mensaje" title="Enviar">➤</button></form>
+    </section>
+  </main>
+  <div class="screen" id="welcomeScreen" hidden>
+    <form class="dialog welcome-card" id="welcomeForm">
+      <div class="brand welcome-brand"><span class="brand-mark">C</span><span>Conecta</span></div>
+      <p class="eyebrow">TU ESPACIO PARA CONVERSAR</p><h2>Empecemos por conocerte</h2><p class="dialog-copy">Crea tu perfil para empezar a conectar con otras personas.</p>
+      <label class="field-label" for="welcomeName">Tu nombre</label><input class="field" id="welcomeName" maxlength="40" placeholder="¿Cómo te llamas?" required>
+      <label class="field-label" for="welcomeCode">Tu código <span>(opcional)</span></label><input class="field code-field" id="welcomeCode" maxlength="16" placeholder="Ej. LUNA-4821"><small class="field-hint">Puedes elegir uno o dejarlo vacío para generar uno automáticamente. Lo podrás compartir para que te agreguen.</small>
+      <button class="primary-button" type="submit" id="welcomeSubmit">Crear mi cuenta <span>→</span></button>
+      <button class="mode-switch" type="button" id="welcomeMode">¿Ya tienes una cuenta? <b>Inicia sesión</b></button>
+    </form>
+  </div>
+  <div class="screen" id="modalScreen" hidden><section class="dialog modal-card" id="modalContent" role="dialog" aria-modal="true"></section></div>
+  <div class="call-screen" id="callScreen" hidden>
+    <div class="call-topbar"><span class="call-brand"><span class="brand-mark">C</span> Conecta</span><span class="call-encryption">◇ &nbsp; Llamada cifrada en tránsito</span><button class="close-button" id="callClose" aria-label="Cerrar llamada">×</button></div>
+    <div class="call-stage" id="callStage"><div class="call-person" id="callPerson"></div><video id="remoteVideo" autoplay playsinline></video><video id="localVideo" autoplay playsinline muted></video><audio id="remoteAudio" autoplay></audio><div class="call-status" id="callStatus">Conectando…</div></div>
+    <div class="incoming-call" id="incomingCall" hidden><div class="incoming-avatar" id="incomingAvatar"></div><p class="eyebrow">LLAMADA ENTRANTE</p><h2 id="incomingName">Contacto</h2><p class="incoming-type" id="incomingType">Llamada de voz</p><div class="incoming-actions"><button class="call-control decline" id="declineCall" aria-label="Rechazar llamada">☎</button><button class="call-control accept" id="acceptCall" aria-label="Contestar llamada">☎</button></div></div>
+    <div class="call-controls"><button class="call-control" id="muteCall" title="Silenciar micrófono" aria-label="Silenciar micrófono">♬</button><button class="call-control" id="toggleCamera" title="Apagar cámara" aria-label="Apagar cámara">▣</button><button class="call-control end-call" id="endCall" title="Finalizar llamada" aria-label="Finalizar llamada">☎</button><button class="call-control" id="speakerCall" title="Activar altavoz" aria-label="Activar altavoz">◖))</button></div>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="app.js"></script>
+</body>
+</html>
